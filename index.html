@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>QR Code Component</title>
+  <style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Arial',sans-serif;
+}
 
+body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    background-color:#f0f5ff;
+    position:relative;
+    overflow:hidden;
+}
+
+.container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    padding:20px;
+    position:relative;
+}
+
+.card{
+    background-color:white;
+    border-radius:16px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.05);
+    padding:24px;
+    width:320px;
+    max-width:100%;
+    text-align:center;
+    position:relative;
+    z-index:1;
+}
+
+.qr-code{
+    background-color:#2563eb;
+    border-radius:10px;
+    width:200px;
+    height:200px;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.qr-code img{
+    width:90%;
+    height:90%;
+}
+
+.title{
+    font-size:18px;
+    font-weight:bold;
+    color:#1e293b;
+    margin-bottom:12px;
+    line-height:1.4;
+}
+
+.description{
+    font-size:14px;
+    color:#64749b;
+    line-height:1.5;
+}
+
+.toggle-container{
+    display:flex;
+    margin-top:30px;
+    gap:10px;
+}
+
+.toggle-btn{
+    padding:10px 20px;
+    border-radius:20px;
+    border:none;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+.url-input-container{
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.url-input{
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+    width:100%;
+    font-size:14px;
+}
+
+.generate-btn{
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    background-color:#3b4eff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+.generate-btn:hover{
+    background-color:#2a3cff;
+}
+
+@media(max-width:768px) {
+    body.desktop.container{
+        width:100%;
+        max-width:450px;
+    }
+
+    body.mobile.container{
+        width:100%;
+        max-width:320px;
+    }
+body.desktop.card{
+    width:100%;
+}
+body.mobile.card{
+    width:100%;
+}
+}
+  </style>
+</head>
+
+<body class="desktop">
+    <div class="container">
+        <div class="card">
+            <div class="qr-code">
+                <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://siftd.net/" alt="QR Code">
+            </div>
+            <h2 class="title">Improve your front end skills by building projects</h2>
+            <p class="description">Scan the QR code to visit Front-End Mentor and take your coding skills to the next level.</p>
+            <div class="url-input-container">
+                <input type="text" class="url-input" placeholder="Enter URL (e.g., https://example.com)" value="https://siftd.net/">
+                <button class="generate-btn" onclick="generateQR()">Generate QR Code</button>
+            </div>
+        </div>
+    </div>
+   <script>
+     // Function to generate QR code
+function generateQR() {
+    const urlInput = document.getElementById('url-input').value.trim();
+    const qrImage = document.getElementById('qr-image');
+    
+    if (urlInput) {
+        // Validate URL
+        let validUrl = urlInput;
+        if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
+            validUrl = 'https://' + urlInput;
+        }
+        
+        // Generate QR code using the QR Server API
+        qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(validUrl)}`;
+        
+        // Update the description to match the new URL
+        const domain = new URL(validUrl).hostname.replace('www.', '');
+        document.querySelector('.description').textContent = `Scan the QR code to visit ${domain} and take your coding skills to the next level`;
+    } else {
+        alert('Please enter a valid URL');
+    }
+}
+   </script>
+</body>
+</html>
+  
